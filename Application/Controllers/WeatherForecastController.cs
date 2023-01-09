@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace GamesAPI.Controllers
+namespace Application.Controllers
 {
     [ApiController]
     [Route("[controller]")]

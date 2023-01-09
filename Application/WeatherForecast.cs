@@ -1,4 +1,4 @@
-namespace GamesAPI
+namespace Application
 {
     public class WeatherForecast
     {
