@@ -10,9 +10,9 @@ namespace GamesAPI
 
         public bool Login(Login login)
         {
-            var user = repository.GetByUserName(login.username);
+            var user = repository.GetByUserName(login.Username);
 
-            if (user != null && user.password == login.password)
+            if (user != null && user.Password == login.Password)
             {
                 return true;
             }
