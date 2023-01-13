@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
+    [Serializable]
     public class UserService
     {
         public UserRepository repository = new UserRepository();
@@ -19,12 +20,19 @@ namespace Services
         }
 
 
-        public User CreateNewPassword(string username)
+        public User ForgotPassword(string username)
         {
             var getUser = repository.GetByUserName(username);
 
             return getUser;
         }
 
+        /*public User RecoverPassword (string username)
+        {
+            var getPassword = repository.RecoverPassword(User.password);
+
+            return getPassword;
+        }
+        */
     }
 }

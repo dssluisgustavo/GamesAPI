@@ -24,9 +24,9 @@ namespace Repository
 
                         User user = new User();
 
-                        user.username = reader.GetString(1);
-                        user.password = reader.GetString(2);
-                        user.email = reader.GetString(3);
+                        user.Username = reader.GetString(1);
+                        user.Password = reader.GetString(2);
+                        user.Email = reader.GetString(3);
 
                         return user;
                     }
@@ -52,9 +52,9 @@ namespace Repository
 
                         User user = new User();
 
-                        user.username = reader.GetString(1);
-                        user.password = reader.GetString(2);
-                        user.email = reader.GetString(3);
+                        user.Username = reader.GetString(1);
+                        user.Password = reader.GetString(2);
+                        user.Email = reader.GetString(3);
 
                         //tratar fluxo de usuário
 
@@ -68,11 +68,24 @@ namespace Repository
         {
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
             {
-                using (NpgsqlCommand command = data.CreateCommand($"INSERT INTO \"user\" (username, \"password\", email) VALUES ('{user.username}', '{user.password}', '{user.email}') RETURNING id"))
+                using (NpgsqlCommand command = data.CreateCommand($"INSERT INTO \"user\" (username, \"password\", email) VALUES ('{user.Username}', '{user.Password}', '{user.Email}') RETURNING id"))
                 {
                     int id = (int)command.ExecuteScalar();
 
                     return id;
+                }
+            }
+        }
+
+        public string RecoverPassword(string password)
+        {
+            using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
+            {
+                using (NpgsqlCommand command = data.CreateCommand($"UPDATE \"user\" SET \"password\" = {password}"))
+                {
+                    command.ExecuteNonQuery();
+
+                    return password;
                 }
             }
         }

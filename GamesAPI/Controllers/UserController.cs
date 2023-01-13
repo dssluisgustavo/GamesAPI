@@ -24,17 +24,34 @@ namespace GamesAPI.Controllers
         {
             UserService getUser = new UserService();
 
-            var obj = getUser.CreateNewPassword(username);
+            var user = getUser.ForgotPassword(username);
 
-            User user = new User();
+            User userEmail = new User();
 
-            user.email = obj.email;
+            userEmail.Email = user.Email;
 
-            if (user.email == obj.email)
+            if (userEmail.Email == user.Email)
             {
                 return Ok(ConfigURL.BASE_URL + $"recoverpassword?username={username}");
             }
             return BadRequest();
         }
+
+       /* [HttpPut]
+        public IActionResult RecoverPassword (string username)
+        {
+            UserService getUser = new UserService();
+
+            var user = getUser.RecoverPassword(username);
+
+            User userForPassword = new User();
+
+            user.password = getUser.RecoverPassword(password);
+            
+            if (userForPassword.username == user.username)
+            {
+
+            }
+        }*/
     }
 }
