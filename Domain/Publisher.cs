@@ -12,9 +12,19 @@ namespace Domain
         public string Name;
     }
 
+    public class PublisherDetails
+    {
+        public Publisher publisher;
+        public PlatformSales platform;
+        public List <PlatformSales> platformList;
+
+
+        public string Url;
+    }
+
     public class PublisherSales
     {
-        public Publisher publisher = new Publisher();
+        public Publisher publisher;
         public string Url;
         public double Sales;
 
