@@ -10,5 +10,25 @@ namespace Domain
     {
         public int Id;
         public string Name;
+        public string Genre;
+    }
+
+    public class GameDetails
+    {
+        public Game game;
+
+        public List<Region_Sales> regionSales;
+        public List<PlatformSales> platform;
+        public List<PublisherSales> publisher;
+
+        public string Url;
+        public double Sales;
+    }
+
+    public class GameSales
+    {
+        public Game game;
+        public string Url;
+        public double Sales;
     }
 }
