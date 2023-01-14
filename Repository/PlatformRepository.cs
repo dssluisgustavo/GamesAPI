@@ -12,6 +12,7 @@ namespace Repository
     public class PlatformRepository
     {
         public const string connectionString = ("User Id=postgres;Password=C2WKIjQEdr4BsF5d;Server=db.blditmfikaiulhyinehk.supabase.co;Port=5432;Database=postgres");
+
         public List<PlatformSales> GetAll()
         {
             var platformList = new List<PlatformSales>();
@@ -55,21 +56,22 @@ namespace Repository
                 using (NpgsqlCommand command = data.CreateCommand(@$"SELECT * FROM platform WHERE id = {id}"))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
-                    {    
+                    {
                         reader.Read();
 
-                        platform.platInfos = new Platform();
+                        platform.platform = new Platform();
 
-                        platform.platInfos.Id = reader.GetInt32(0);
-                        platform.platInfos.Name = reader.GetString(1);
+                        platform.platform.Id = reader.GetInt32(0);
+                        platform.platform.Name = reader.GetString(1);
 
                     }
                     using (NpgsqlCommand newCommand = data.CreateCommand(@$"
                                     SELECT publisher.id, publisher.publisher_name 
-                                    FROM game_platform 
-                                    JOIN game_publisher ON game_platform.game_publisher_id = game_publisher.publisher_id 
-                                    JOIN publisher ON game_publisher.publisher_id = publisher.id
-                                    WHERE game_publisher_id = {id}
+                                    FROM platform
+                                    JOIN game_platform ON platform.id = game_platform.platform_id 
+                                    JOIN game_publisher ON game_platform.platform_id = game_publisher.publisher_id 
+                                    JOIN publisher ON game_publisher.publisher_id = publisher.id 
+                                    WHERE platform.id = {id}
                                     GROUP BY publisher.id
                                     ORDER BY publisher.id"))
                     {
@@ -80,6 +82,7 @@ namespace Repository
                             while (newReader.Read())
                             {
                                 PublisherSales publisherInfo = new PublisherSales();
+                                publisherInfo.publisher = new Publisher();
 
                                 publisherInfo.publisher.Id = newReader.GetInt32(0);
                                 publisherInfo.publisher.Name = newReader.GetString(1);
@@ -87,7 +90,7 @@ namespace Repository
                                 platform.publishers.Add(publisherInfo);
                             }
                         }
-                        using(NpgsqlCommand commandNew = data.CreateCommand(@$"
+                        using (NpgsqlCommand commandNew = data.CreateCommand(@$"
                                 SELECT game.id, game.game_name 
                                 FROM game_platform 
                                 JOIN game_publisher ON game_platform.game_publisher_id = game_publisher.game_id  
@@ -98,18 +101,17 @@ namespace Repository
                         {
                             using (NpgsqlDataReader readerNew = commandNew.ExecuteReader())
                             {
-                                platform.games = new List<Game>();
+                                platform.games = new List<GameSales>();
 
-                                while(readerNew.Read())
+                                while (readerNew.Read())
                                 {
-                                    Game gamesInfo= new Game();
+                                    GameSales gamesInfo = new GameSales();
+                                    gamesInfo.game = new Game();
 
-                                    gamesInfo.Id = readerNew.GetInt32(0);
-                                    gamesInfo.Name= readerNew.GetString(1);
+                                    gamesInfo.game.Id = readerNew.GetInt32(0);
+                                    gamesInfo.game.Name = readerNew.GetString(1);
 
                                     platform.games.Add(gamesInfo);
-
-
                                 }
 
                                 return platform;

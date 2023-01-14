@@ -15,10 +15,10 @@ namespace Domain
 
     public class PlatformDetails
     {
-        public Platform platInfos;
+        public Platform platform;
 
         public List<PublisherSales> publishers;
-        public List <Game> games;
+        public List <GameSales> games;
 
         public string Url;
         public double Sales;

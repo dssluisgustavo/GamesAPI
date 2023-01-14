@@ -32,17 +32,15 @@ namespace Services
         {
             var platformById = repository.GetById(id);
 
-            platformById.Url = ConfigURL.BASE_URL + $"platform/{platformById.platInfos.Id}";
-
             for (int i = 0; i < platformById.publishers.Count; i++)
             {
                 PublisherSales getPublishers = platformById.publishers[i];
                 getPublishers.Url = ConfigURL.BASE_URL + $"publisher/{getPublishers.publisher.Id}";
             }
 
-            foreach (PublisherSales getGames in platformById.publishers)
+            foreach (GameSales getGames in platformById.games)
             {
-                getGames.Url = ConfigURL.BASE_URL + $"game/{getGames.publisher.Id}";
+                getGames.Url = ConfigURL.BASE_URL + $"game/{getGames.game.Id}";
             }
 
             return platformById;
