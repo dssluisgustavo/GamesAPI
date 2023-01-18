@@ -1,5 +1,7 @@
 ﻿using Domain;
 using Npgsql;
+using NPOI.SS.Formula.Functions;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class GameRepository
+    public class GameRepository : IGameRepository
     {
         public const string connectionString = ("User Id=postgres;Password=C2WKIjQEdr4BsF5d;Server=db.blditmfikaiulhyinehk.supabase.co;Port=5432;Database=postgres");
 
         public List<GameSales> GetAll()
         {
-            var gameList = new List<GameSales>();
+            var gamesList = new List<GameSales>();
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
             {
@@ -29,16 +31,16 @@ namespace Repository
                         while (reader.Read())
                         {
                             GameSales game = new GameSales();
-                            game.game = new Game();
+                            game.Game = new Game();
 
-                            game.game.Id = reader.GetInt32(0);
-                            game.game.Name = reader.GetString(1);
-                            game.game.Genre = reader.GetString(2);
+                            game.Game.Id = reader.GetInt32(0);
+                            game.Game.Name = reader.GetString(1);
+                            game.Game.Genre = reader.GetString(2);
 
-                            gameList.Add(game);
+                            gamesList.Add(game);
                         }
 
-                        return gameList;
+                        return gamesList;
                     }
                 }
             }
@@ -46,7 +48,7 @@ namespace Repository
 
         public GameDetails GetById(int id)
         {
-            GameDetails game = new GameDetails();
+            GameDetails gameDetails = new GameDetails();
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
             {
@@ -59,12 +61,18 @@ namespace Repository
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        reader.Read();
-                        game.game = new Game();
+                        bool hasLine = reader.Read();
 
-                        game.game.Id = reader.GetInt32(0);
-                        game.game.Name = reader.GetString(1);
-                        game.game.Genre = reader.GetString(2);
+                        if (hasLine == false)
+                        {
+                            return null ;
+                        }
+
+                        gameDetails.Game = new Game();
+
+                        gameDetails.Game.Id = reader.GetInt32(0);
+                        gameDetails.Game.Name = reader.GetString(1);
+                        gameDetails.Game.Genre = reader.GetString(2);
                     }
                 }
                 using (NpgsqlCommand newCommand = data.CreateCommand($@"
@@ -80,18 +88,18 @@ namespace Repository
                 {
                     using (NpgsqlDataReader newReader = newCommand.ExecuteReader())
                     {
-                        game.publisher = new List<PublisherSales>();
+                        gameDetails.Publisher = new List<PublisherSales>();
 
                         while (newReader.Read())
                         {
-                            PublisherSales publisherSales = new PublisherSales();
-                            publisherSales.publisher = new Publisher();
+                            PublisherSales publisherDetails = new PublisherSales();
+                            publisherDetails.Publisher = new Publisher();
 
-                            publisherSales.publisher.Id = newReader.GetInt32(0);
-                            publisherSales.publisher.Name = newReader.GetString(1);
-                            publisherSales.Sales = newReader.GetDouble(2);
+                            publisherDetails.Publisher.Id = newReader.GetInt32(0);
+                            publisherDetails.Publisher.Name = newReader.GetString(1);
+                            publisherDetails.Sales = newReader.GetDouble(2);
 
-                            game.publisher.Add(publisherSales);
+                            gameDetails.Publisher.Add(publisherDetails);
                         }
                     }
                 }
@@ -108,18 +116,18 @@ namespace Repository
                 {
                     using (NpgsqlDataReader readerNew = commandNew.ExecuteReader())
                     {
-                        game.platform = new List<PlatformSales>();
+                        gameDetails.Platform = new List<PlatformSales>();
 
                         while (readerNew.Read())
                         {
-                            PlatformSales platformSales = new PlatformSales();
-                            platformSales.platform = new Platform();
+                            PlatformSales platformDetails = new PlatformSales();
+                            platformDetails.Platform = new Platform();
 
-                            platformSales.platform.Id= readerNew.GetInt32(0);
-                            platformSales.platform.Name = readerNew.GetString(1);
-                            platformSales.Sales = readerNew.GetDouble(2);
+                            platformDetails.Platform.Id= readerNew.GetInt32(0);
+                            platformDetails.Platform.Name = readerNew.GetString(1);
+                            platformDetails.Sales = readerNew.GetDouble(2);
 
-                            game.platform.Add(platformSales);
+                            gameDetails.Platform.Add(platformDetails);
                         }
                     }
                 }
@@ -136,24 +144,25 @@ namespace Repository
                 {
                     using (NpgsqlDataReader otherReader = otherCommad.ExecuteReader())
                     {
-                        game.regionSales = new List<Region_Sales>();
+                        gameDetails.Region = new List<Region_Sales>();
 
                         while (otherReader.Read())
                         {
-                            Region_Sales regionSales = new Region_Sales();
-                            regionSales.region = new Region();
+                            Region_Sales regionDetails = new Region_Sales();
+                            regionDetails.Region = new Region();
 
-                            regionSales.region.Id = otherReader.GetInt32(0);
-                            regionSales.region.Name = otherReader.GetString(1);
-                            regionSales.SalesValue= otherReader.GetDouble(2);
+                            regionDetails.Region.Id = otherReader.GetInt32(0);
+                            regionDetails.Region.Name = otherReader.GetString(1);
+                            regionDetails.SalesValue= otherReader.GetDouble(2);
 
-                            game.regionSales.Add(regionSales);
+                            gameDetails.Region.Add(regionDetails);
                         }
 
-                        return game;
+                        return gameDetails;
                     }
                 }
             }
         }
+
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Domain;
+using NPOI.SS.Formula.Functions;
 using Repository;
+using Repository.Interfaces;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,42 +11,51 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class GameService
+    public class GameService : IGameService
     {
-        public GameRepository repository = new GameRepository();
+        private readonly IGameRepository gameRepository;
+        public GameService(IGameRepository gameRepositoryInterface)
+        {
+            gameRepository = gameRepositoryInterface;
+        }
 
         public List<GameSales> GetAll()
         {
-            var gameList = repository.GetAll();
+            List<GameSales> gamesList = gameRepository.GetAll();
 
-            for (int i = 0; i < gameList.Count; i++)
+            for (int i = 0; i < gamesList.Count; i++)
             {
-                gameList[i].Url = ConfigURL.BASE_URL + $"platform/{gameList[i].game.Id}";
+                gamesList[i].Url = ConfigURL.base_url + $"game/{gamesList[i].Game.Id}";
             }
 
-            return gameList;
+            return gamesList;
         }
 
         public GameDetails GetById(int id)
         {
-            var gameById = repository.GetById(id);
+            GameDetails gameDetails = gameRepository.GetById(id);
 
-            foreach (PublisherSales getPublishers in gameById.publisher)
+            if (gameDetails == null)
             {
-                getPublishers.Url = ConfigURL.BASE_URL + $"/publisher/{getPublishers.publisher.Id}";
+                return null;
             }
 
-            foreach (PlatformSales getPlatforms in gameById.platform)
+            foreach (PublisherSales publishersList in gameDetails.Publisher)
             {
-                getPlatforms.Url = ConfigURL.BASE_URL + $"/publisher/{getPlatforms.platform.Id}";
+                publishersList.Url = ConfigURL.base_url + $"/gamepublisher/{publishersList.Publisher.Id}";
             }
 
-            foreach (Region_Sales getRegions in gameById.regionSales)
+            foreach (PlatformSales platformsList in gameDetails.Platform)
             {
-                getRegions.Url = ConfigURL.BASE_URL + $"/publisher/{getRegions.region.Id}";
+                platformsList.Url = ConfigURL.base_url + $"/gameplatform/{platformsList.Platform.Id}";
             }
 
-            return gameById;
+            foreach (Region_Sales regionsList in gameDetails.Region)
+            {
+                regionsList.Url = ConfigURL.base_url + $"/gameregion/{regionsList.Region.Id}";
+            }
+
+            return gameDetails;
         }
     }
 }

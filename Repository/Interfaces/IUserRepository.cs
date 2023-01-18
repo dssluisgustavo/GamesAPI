@@ -10,12 +10,12 @@ namespace Repository.Interfaces
 {
     public interface IUserRepository
     {
-        T GetById(int id);
+        User GetById(int id);
 
-        T GetByUseraname(string username);
+        User GetByUsername(string username);
 
-        T CreateUser(User user);
+        int CreateUser(User user);
 
-        T RecoverPassword (string password);
+        string RecoverPassword (string password);
     }
 }

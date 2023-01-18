@@ -1,5 +1,8 @@
 ﻿using Domain;
+using NPOI.SS.Formula.Functions;
 using Repository;
+using Repository.Interfaces;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,33 +12,42 @@ using System.Threading.Tasks;
 namespace Services
 {
     [Serializable]
-    public class PublisherService
+    public class PublisherService : IPublisherService
     {
-        PublisherRepository repository = new PublisherRepository();
+        private readonly IPublisherRepository publisherRepository;
+        public PublisherService(IPublisherRepository publisherRepositoryInterface)
+        {
+            publisherRepository = publisherRepositoryInterface;
+        }
 
         public List<PublisherSales> GetAll()
         {
-            var publisherList = repository.GetAll();
+            List<PublisherSales> publisherList = publisherRepository.GetAll();
 
             for (int i = 0; i < publisherList.Count; i++)
             {
-                publisherList[i].Url = ConfigURL.BASE_URL + $"platform/{publisherList[i].publisher.Id}";
+                publisherList[i].Url = ConfigURL.base_url + $"publisher/{publisherList[i].Publisher.Id}";
             }
             return publisherList;
         }
 
         public PublisherDetails GetById(int id)
         {
-            var publisherById = repository.GetById(id);
-            
-            for (int i = 0; i<publisherById.platformList.Count; i++)
+            PublisherDetails publisherDetails = publisherRepository.GetById(id);
+
+            if (publisherDetails == null)
             {
-                PlatformSales getPlatforms = publisherById.platformList[i];
-                getPlatforms.Url = ConfigURL.BASE_URL + $"platforms{getPlatforms.platform.Id}";
+                return null;
+            }
+
+            for (int i = 0; i < publisherDetails.PlatformsList.Count; i++)
+            {
+                PlatformSales platformsList = publisherDetails.PlatformsList[i];
+                platformsList.Url = ConfigURL.base_url + $"publisher/{platformsList.Platform.Id}";
 
             }
 
-            return publisherById;
+            return publisherDetails;
 
         }
     }

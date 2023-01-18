@@ -1,4 +1,5 @@
-﻿using NPOI.SS.Formula.Functions;
+﻿using Domain;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Repository.Interfaces
 {
     public interface IPublisherRepository
     {
-        List<T> GetAll();
+        List<PublisherSales> GetAll();
 
-        T GetById(int id);
+        PublisherDetails GetById(int id);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Domain;
-using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +9,8 @@ namespace Services.Interfaces
 {
     public interface IUserService
     {
-        T CreateUser(User user);
+        int CreateUser(User user);
 
-        T ForgoutPasword(string username);
+        User ForgotPassword(string username);
     }
 }

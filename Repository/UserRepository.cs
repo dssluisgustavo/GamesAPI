@@ -1,5 +1,7 @@
 ﻿using Domain;
 using Npgsql;
+using NPOI.SS.Formula.Functions;
+using Repository.Interfaces;
 using System.Collections;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -7,7 +9,7 @@ using System.Net;
 
 namespace Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         public const string connectionString = ("User Id=postgres;Password=C2WKIjQEdr4BsF5d;Server=db.blditmfikaiulhyinehk.supabase.co;Port=5432;Database=postgres");
 
@@ -34,7 +36,7 @@ namespace Repository
             }
         }
 
-        public User GetByUserName(string username)
+        public User GetByUsername(string username)
         {
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
@@ -70,9 +72,9 @@ namespace Repository
             {
                 using (NpgsqlCommand command = data.CreateCommand($"INSERT INTO \"user\" (username, \"password\", email) VALUES ('{user.Username}', '{user.Password}', '{user.Email}') RETURNING id"))
                 {
-                    int id = (int)command.ExecuteScalar();
+                    int newUserId = (int)command.ExecuteScalar();
 
-                    return id;
+                    return newUserId;
                 }
             }
         }
@@ -89,6 +91,5 @@ namespace Repository
                 }
             }
         }
-
     }
 }

@@ -8,12 +8,12 @@ namespace Domain
 {
     public class Sales
     {
-        public double SalesValue;
+        public double SalesValue { get; set; }
     }
     public class Region_Sales
     {
-        public Region region;
-        public string Url;
-        public double SalesValue;
+        public Region Region { get; set; }
+        public string Url { get; set; }
+        public double SalesValue { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Domain;
 using Npgsql;
+using NPOI.SS.Formula.Functions;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,14 +11,13 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class PublisherRepository
+    public class PublisherRepository : IPublisherRepository
     {
         public const string connectionString = ("User Id=postgres;Password=C2WKIjQEdr4BsF5d;Server=db.blditmfikaiulhyinehk.supabase.co;Port=5432;Database=postgres");
 
-
         public List<PublisherSales> GetAll()
         {
-            var publisherList = new List<PublisherSales>();
+            List<PublisherSales> publishersList = new List<PublisherSales>();
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
             {
@@ -34,16 +35,16 @@ namespace Repository
                         while (reader.Read())
                         {
                             PublisherSales publisher = new PublisherSales();
-                            publisher.publisher = new Publisher();
+                            publisher.Publisher = new Publisher();
 
-                            publisher.publisher.Id = reader.GetInt32(0);
-                            publisher.publisher.Name = reader.GetString(1);
+                            publisher.Publisher.Id = reader.GetInt32(0);
+                            publisher.Publisher.Name = reader.GetString(1);
                             publisher.Sales = reader.GetDouble(2);
 
-                            publisherList.Add(publisher);
+                            publishersList.Add(publisher);
                         }
 
-                        return publisherList;
+                        return publishersList;
                     }
                 }
             }
@@ -51,7 +52,7 @@ namespace Repository
 
         public PublisherDetails GetById(int id)
         {
-            PublisherDetails getDetails = new PublisherDetails();
+            PublisherDetails publisherDetails = new PublisherDetails();
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
             {
@@ -59,12 +60,17 @@ namespace Repository
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        reader.Read();
+                        bool hasLine = reader.Read();
 
-                        getDetails.publisher = new Publisher();
+                        if (hasLine == false)
+                        {
+                            return null;
+                        }
 
-                        getDetails.publisher.Id = reader.GetInt32(0);
-                        getDetails.publisher.Name = reader.GetString(1);
+                        publisherDetails.Publisher = new Publisher();
+
+                        publisherDetails.Publisher.Id = reader.GetInt32(0);
+                        publisherDetails.Publisher.Name = reader.GetString(1);
 
                     }
                     using (NpgsqlCommand newCommand = data.CreateCommand($@"
@@ -79,22 +85,22 @@ namespace Repository
                     {
                         using (NpgsqlDataReader newReader = newCommand.ExecuteReader())
                         {
-                            getDetails.platformList = new List<PlatformSales>();
+                            publisherDetails.PlatformsList = new List<PlatformSales>();
                             
 
                             while (newReader.Read())
                             {
-                                PlatformSales platformInfos = new PlatformSales();
-                                platformInfos.platform = new Platform();
+                                PlatformSales platformDetails = new PlatformSales();
+                                platformDetails.Platform = new Platform();
 
-                                platformInfos.platform.Id = newReader.GetInt32(0);
-                                platformInfos.platform.Name = newReader.GetString(1);
-                                platformInfos.Sales = newReader.GetDouble(2);
+                                platformDetails.Platform.Id = newReader.GetInt32(0);
+                                platformDetails.Platform.Name = newReader.GetString(1);
+                                platformDetails.Sales = newReader.GetDouble(2);
 
-                                getDetails.platformList.Add(platformInfos);
+                                publisherDetails.PlatformsList.Add(platformDetails);
                             }
 
-                            return getDetails;
+                            return publisherDetails;
                         }
                     }
                 }

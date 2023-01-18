@@ -1,7 +1,17 @@
+using GamesAPI;
+using NPOI.SS.Formula.Functions;
+using Services;
+using Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddTransient<IGameService, GameService>();
+builder.Services.AddTransient<ILoginService, LoginService>();
+builder.Services.AddTransient<IPlatformService, PlatformService>();
+builder.Services.AddTransient<IPublisherService, PublisherService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

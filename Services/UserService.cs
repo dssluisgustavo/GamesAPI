@@ -1,5 +1,8 @@
 ﻿using Domain;
+using NPOI.SS.Formula.Functions;
 using Repository;
+using Repository.Interfaces;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +12,32 @@ using System.Threading.Tasks;
 namespace Services
 {
     [Serializable]
-    public class UserService
+    public class UserService : IUserService
     {
-        public UserRepository repository = new UserRepository();
-        public int CreateUser(User newuser)
+        private readonly IUserRepository userRepository;
+        public UserService(IUserRepository userRepositoryInterface)
         {
-            var idNewUser = repository.CreateUser(newuser);
+            userRepository = userRepositoryInterface;
+        }
 
-            return idNewUser;
+        public int CreateUser(User createUser)
+        {
+            int newUser = userRepository.CreateUser(createUser);
+
+            return newUser;
         }
 
 
         public User ForgotPassword(string username)
         {
-            var getUser = repository.GetByUserName(username);
+            User userName = userRepository.GetByUsername(username);
 
-            return getUser;
+            if (userName == null)
+            {
+                return null;
+            }
+
+            return userName;
         }
 
         /*public User RecoverPassword (string username)

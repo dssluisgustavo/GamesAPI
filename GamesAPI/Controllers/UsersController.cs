@@ -1,38 +1,46 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Interfaces;
 using Services;
+using Services.Interfaces;
 
 namespace GamesAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
+        private readonly IUserService userService;
+        public UsersController(IUserService userServiceInterface)
+        {
+            userService = userServiceInterface;
+        }
+
         [HttpPost]
         public IActionResult SignUp([FromBody] User user)
         {
-            UserService getinfos = new UserService();
+            int login = userService.CreateUser(user);
 
-            var userId = getinfos.CreateUser(user);
-
-            return Created($"\\user\\{userId}", userId);
+            if(login == null)
+            {
+                return BadRequest();
+            }
+            return Created($"\\user\\{login}", login);
 
         }
 
         [HttpGet("forgotpassword.email={username}")]
         public IActionResult ForgotPassWord(string username)
         {
-            UserService getUser = new UserService();
+            User user = userService.ForgotPassword(username);
 
-            var user = getUser.ForgotPassword(username);
+            User Registered = new User();
 
-            User userEmail = new User();
+            Registered.Email = user.Email;
 
-            userEmail.Email = user.Email;
-
-            if (userEmail.Email == user.Email)
+            if (Registered.Email == user.Email)
             {
-                return Ok(ConfigURL.BASE_URL + $"recoverpassword?username={username}");
+                return Ok(ConfigURL.base_url + $"recoverpassword?username={username}");
             }
             return BadRequest();
         }

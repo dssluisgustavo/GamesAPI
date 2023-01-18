@@ -8,27 +8,27 @@ namespace Domain
 {
     public class Platform
     {
-        public int Id;
-        public string Name;
+        public int Id { get; set; }
+        public string Name { get; set; }
 
     }
 
     public class PlatformDetails
     {
-        public Platform platform;
+        public Platform Platform { get; set; }
 
-        public List<PublisherSales> publishers;
-        public List <GameSales> games;
+        public List<PublisherSales> Publishers { get; set; }
+        public List <GameSales> Games { get; set; }
 
-        public string Url;
-        public double Sales;
+        public string Url { get; set; }
+        public double Sales { get; set; }
 
     }
 
     public class PlatformSales
     {
-        public Platform platform;
-        public double Sales;
-        public string Url;
+        public Platform Platform { get; set; }
+        public double Sales { get; set; }
+        public string Url { get; set; }
     }
 }

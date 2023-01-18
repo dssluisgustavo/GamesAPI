@@ -8,25 +8,25 @@ namespace Domain
 {
     public class Publisher
     {
-        public int Id;
-        public string Name;
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 
     public class PublisherDetails
     {
-        public Publisher publisher;
-        public PlatformSales platform;
-        public List <PlatformSales> platformList;
+        public Publisher Publisher { get; set; }
+        public PlatformSales Platform { get; set; }
+        public List <PlatformSales> PlatformsList { get; set; }
 
 
-        public string Url;
+        public string Url { get; set; }
     }
 
     public class PublisherSales
     {
-        public Publisher publisher;
-        public string Url;
-        public double Sales;
+        public Publisher Publisher { get; set; }
+        public string Url { get; set; }
+        public double Sales { get; set; }
 
     }
 }

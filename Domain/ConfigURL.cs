@@ -8,6 +8,6 @@ namespace Domain
 {
     public static class ConfigURL
     {
-        public const string BASE_URL = "localhost:43243/";
+        public const string base_url = "localhost:43243/";
     }
 }

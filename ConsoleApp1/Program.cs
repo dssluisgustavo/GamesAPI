@@ -11,8 +11,8 @@ Console.WriteLine("Digete:");
 var service = new LoginService();
 var user = new User();
 
-user.username = Console.ReadLine();
-user.password = Console.ReadLine();
+user.Username = Console.ReadLine();
+user.Password = Console.ReadLine();
 
 var result = service.CreateUser(user);
 Console.WriteLine(result);

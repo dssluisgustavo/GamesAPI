@@ -1,18 +1,24 @@
 ﻿using Domain;
 using Repository;
+using Repository.Interfaces;
+using Services.Interfaces;
 
 namespace GamesAPI
 {
     [Serializable]
-    public class LoginService
+    public class LoginService : ILoginService
     {
-        public UserRepository repository = new UserRepository();
-
-        public bool Login(Login login)
+        private readonly IUserRepository userRepository;
+        public LoginService(IUserRepository userRepositoryInterface)
         {
-            var user = repository.GetByUserName(login.Username);
+            userRepository = userRepositoryInterface;
+        }
 
-            if (user != null && user.Password == login.Password)
+        public bool Login(Login user)
+        {
+            User login = userRepository.GetByUsername(user.Username);
+
+            if (login != null && login.Password == user.Password)
             {
                 return true;
             }
@@ -20,7 +26,7 @@ namespace GamesAPI
             return false;
         }
 
-      
+
     }
 
 

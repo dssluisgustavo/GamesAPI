@@ -7,28 +7,28 @@ using System.Threading.Tasks;
 namespace Domain
 {
     public class Game
-    {
-        public int Id;
-        public string Name;
-        public string Genre;
+    { 
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Genre { get; set; }
     }
 
     public class GameDetails
     {
-        public Game game;
+        public Game Game { get; set; }
 
-        public List<Region_Sales> regionSales;
-        public List<PlatformSales> platform;
-        public List<PublisherSales> publisher;
+        public List<Region_Sales> Region { get; set; }
+        public List<PlatformSales> Platform { get; set; }
+        public List<PublisherSales> Publisher { get; set; }
 
-        public string Url;
-        public double Sales;
+        public string Url { get; set; }
+        public double Sales { get; set; }
     }
 
     public class GameSales
     {
-        public Game game;
-        public string Url;
-        public double Sales;
+        public Game Game { get; set; }
+        public string Url { get; set; }
+        public double Sales { get; set; }
     }
 }

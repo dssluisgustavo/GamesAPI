@@ -1,4 +1,5 @@
-﻿using NPOI.SS.Formula.Functions;
+﻿using Domain;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace Services.Interfaces
 {
     public interface IGameService
     {
-        List<T> GetAll();
+        List<GameSales> GetAll();
 
-        T GetById(int id);
+        GameDetails GetById(int id);
     }
 }

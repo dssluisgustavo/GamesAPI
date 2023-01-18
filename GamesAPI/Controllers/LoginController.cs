@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
 
 namespace GamesAPI.Controllers
 {
@@ -7,22 +8,25 @@ namespace GamesAPI.Controllers
     [Route("[controller]")]
     public class LoginController : Controller
     {
+        private readonly ILoginService loginService;
+        public LoginController(ILoginService loginServiceInterface)
+        {
+            loginService = loginServiceInterface;
+        }
+
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            LoginService service = new LoginService();
-
-            var isLogged = service.Login(login);
+            bool isLogged = loginService.Login(login);
 
             if (isLogged == true)
             {
                 return Ok();
             }
             else { return Unauthorized(); }
-
         }
 
-        [HttpGet]
+        [HttpGet("[/logout]")]
         public IActionResult Logout()
         {
             return Ok();
