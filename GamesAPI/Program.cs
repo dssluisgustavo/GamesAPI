@@ -15,6 +15,7 @@ builder.Services.AddTransient<IPlatformService, PlatformService>();
 builder.Services.AddTransient<IPublisherService, PublisherService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
+builder.Services.AddTransient<IJwtProvider, JwtProvider>();
 builder.Services.AddTransient<IGameRepository, GameRepository>();
 builder.Services.AddTransient<IPlatformRepository, PlatformRepository>();
 builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();

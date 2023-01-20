@@ -20,12 +20,13 @@ namespace GamesAPI
         public string Login(Login user)
         {
             User login = userRepository.GetByUsername(user.Username);
-            string token = providerJWT.NewToken();
 
             if (login == null || login.Password != user.Password)
             {
                 return null;
             }
+
+            string token = providerJWT.NewToken();
 
             return token;
         }
