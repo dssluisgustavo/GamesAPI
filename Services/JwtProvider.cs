@@ -1,5 +1,7 @@
 ﻿using Domain;
+using GamesAPI.Configurations;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NPOI.OpenXmlFormats.Wordprocessing;
 using Services.Interfaces;
@@ -15,11 +17,17 @@ namespace Services
 {
     public class JwtProvider : IJwtProvider
     {
+        private readonly JwtOptions _options;
+        public JwtProvider(IOptions <JwtOptions> options)
+        {
+            _options = options.Value;
+        }
+
         public string NewToken(User user)
         {
-            string issuer = "GamesAPI";
+            string issuer = _options.Issuer;
 
-            string audience = "Front";
+            string audience = _options.Audience;
 
             // roxo
             Claim[] clains = new Claim[3]
@@ -32,11 +40,11 @@ namespace Services
             DateTime dateTime = DateTime.Now.AddDays(1);
 
             // Vermelho e azul
-            SecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ireliaVariosDedos"));
+            SecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret));
             SigningCredentials crendential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             JwtSecurityToken token = new JwtSecurityToken(issuer, audience, clains, null, dateTime, crendential);
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-
+            
 
             string newToken = handler.WriteToken(token);
 

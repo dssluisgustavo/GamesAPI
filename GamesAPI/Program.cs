@@ -1,4 +1,5 @@
 using GamesAPI;
+using GamesAPI.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -55,18 +56,10 @@ builder.Services.AddSwaggerGen(option =>
     });
 }
 );
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ireliaVariosDedos")),
-        ValidIssuer = "GamesAPI",
-        ValidAudience = "Front"
-    };
-});
+builder.Services.ConfigureOptions<JwtOptionsSetUp>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
 
 var app = builder.Build();
 
