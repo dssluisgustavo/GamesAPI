@@ -54,6 +54,7 @@ namespace Repository
 
                         User user = new User();
 
+                        user.Id= reader.GetInt32(0);
                         user.Username = reader.GetString(1);
                         user.Password = reader.GetString(2);
                         user.Email = reader.GetString(3);

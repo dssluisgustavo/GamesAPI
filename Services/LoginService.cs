@@ -26,7 +26,7 @@ namespace GamesAPI
                 return null;
             }
 
-            string token = providerJWT.NewToken();
+            string token = providerJWT.NewToken(login);
 
             return token;
         }
