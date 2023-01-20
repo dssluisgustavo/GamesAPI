@@ -17,11 +17,11 @@ namespace GamesAPI.Controllers
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            string isLogged = loginService.Login(login);
+            string token = loginService.Login(login);
 
-            if (!string.IsNullOrEmpty(isLogged))
+            if (!string.IsNullOrEmpty(token))
             {
-                return Ok();
+                return Ok(token);
             }
             else { return Unauthorized(); }
         }
