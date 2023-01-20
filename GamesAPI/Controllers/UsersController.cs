@@ -21,7 +21,7 @@ namespace GamesAPI.Controllers
         {
             int login = userService.CreateUser(user);
 
-            if(login == null)
+            if(login == 0)
             {
                 return BadRequest();
             }

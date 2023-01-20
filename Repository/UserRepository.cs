@@ -72,8 +72,15 @@ namespace Repository
             {
                 using (NpgsqlCommand command = data.CreateCommand($"INSERT INTO \"user\" (username, \"password\", email) VALUES ('{user.Username}', '{user.Password}', '{user.Email}') RETURNING id"))
                 {
-                    int newUserId = (int)command.ExecuteScalar();
-
+                    int newUserId;
+                    try
+                    {
+                        newUserId = (int)command.ExecuteScalar();
+                    }
+                    catch(Exception ex)
+                    {
+                        newUserId = 0;
+                    }
                     return newUserId;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Domain;
+using NPOI.SS.Formula.Eval;
 using NPOI.SS.Formula.Functions;
 using Repository;
 using Repository.Interfaces;
@@ -7,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Match = System.Text.RegularExpressions.Match;
 
 namespace Services
 {
@@ -24,7 +27,18 @@ namespace Services
         {
             int newUser = userRepository.CreateUser(createUser);
 
-            return newUser;
+            if (createUser.Username.Length.IsBetween(4,10) && createUser.Password.Length.IsBetween(8, 15))
+            {
+                Regex validateEmailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+                Match match = validateEmailRegex.Match(createUser.Email);
+
+                if (match.Success)
+                {
+                    return newUser;
+                }
+            }
+            return 0;
+            
         }
 
 
