@@ -26,7 +26,7 @@ namespace GamesAPI.Controllers
             else { return Unauthorized(); }
         }
 
-        [HttpGet("[/logout]")]
+        [HttpGet("/logout")]
         public IActionResult Logout()
         {
             return Ok();
