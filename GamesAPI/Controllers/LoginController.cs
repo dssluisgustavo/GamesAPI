@@ -17,9 +17,9 @@ namespace GamesAPI.Controllers
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            bool isLogged = loginService.Login(login);
+            string isLogged = loginService.Login(login);
 
-            if (isLogged == true)
+            if (!string.IsNullOrEmpty(isLogged))
             {
                 return Ok();
             }
