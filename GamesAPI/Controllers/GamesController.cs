@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using Services.Interfaces;
@@ -15,6 +16,7 @@ namespace GamesAPI.Controllers
             gameService = gameServiceInterface;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         { 
@@ -23,6 +25,7 @@ namespace GamesAPI.Controllers
             return Ok(allGames);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {

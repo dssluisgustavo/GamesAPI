@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -26,6 +27,7 @@ namespace GamesAPI.Controllers
             else { return Unauthorized(); }
         }
 
+        [Authorize]
         [HttpGet("/logout")]
         public IActionResult Logout()
         {

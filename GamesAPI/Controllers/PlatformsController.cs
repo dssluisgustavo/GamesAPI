@@ -16,6 +16,7 @@ namespace GamesAPI.Controllers
         {
             platformService = platformInterface;
         }
+
         [Authorize]
         [HttpGet]
         public IActionResult GetAll()
@@ -24,6 +25,7 @@ namespace GamesAPI.Controllers
 
             return Ok(allPlatforms);
         }
+
         [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)

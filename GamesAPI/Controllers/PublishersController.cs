@@ -3,6 +3,7 @@ using Domain;
 using Services;
 using Repository.Interfaces;
 using Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GamesAPI.Controllers
 {
@@ -16,6 +17,7 @@ namespace GamesAPI.Controllers
             publisherService = publisherInterface;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -24,6 +26,7 @@ namespace GamesAPI.Controllers
             return Ok(allPublishers);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
