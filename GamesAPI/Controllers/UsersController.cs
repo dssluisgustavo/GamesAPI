@@ -17,7 +17,7 @@ namespace GamesAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp([FromBody] User user)
+        public IActionResult SignUp([FromBody] ValidUser user)
         {
             int login = userService.CreateUser(user);
 
@@ -32,9 +32,9 @@ namespace GamesAPI.Controllers
         [HttpGet("forgotpassword.email={username}")]
         public IActionResult ForgotPassWord(string username)
         {
-            User user = userService.ForgotPassword(username);
+            ValidUser user = userService.ForgotPassword(username);
 
-            User Registered = new User();
+            ValidUser Registered = new ValidUser();
 
             Registered.Email = user.Email;
 

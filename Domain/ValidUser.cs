@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class User
+    public class ValidUser
     {
         public int Id { get; set; }
         public string Username { get; set; }

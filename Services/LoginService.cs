@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Repository;
 using Repository.Interfaces;
+using RepositoryEF.Models;
 using Services.Interfaces;
 
 namespace GamesAPI

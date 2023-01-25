@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GamesAPI.Configurations
 {
-    public class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
+    public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
     {
         private readonly JwtOptions jwtOptions;
         public JwtBearerOptionsSetup(IOptions<JwtOptions> options)
@@ -13,6 +13,12 @@ namespace GamesAPI.Configurations
             jwtOptions = options.Value;
         }
         public void Configure(JwtBearerOptions options)
+        {
+            Configure(JwtBearerDefaults.AuthenticationScheme, options);
+            
+        }
+
+        public void Configure(string? name, JwtBearerOptions options)
         {
             options.TokenValidationParameters = new TokenValidationParameters()
             {

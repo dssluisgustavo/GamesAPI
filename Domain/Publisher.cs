@@ -6,27 +6,22 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Publisher
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
     public class PublisherDetails
     {
-        public Publisher Publisher { get; set; }
+        public int PublisherId { get; set; }
+        public string PublisherName { get; set; }
+        public string PublisherUrl { get; set; }
+        public decimal Sales { get; set; }
         public PlatformSales Platform { get; set; }
-        public List <PlatformSales> PlatformsList { get; set; }
-
-
-        public string Url { get; set; }
+        public List<PlatformSales> PlatformsList { get; set; }
     }
 
     public class PublisherSales
     {
-        public Publisher Publisher { get; set; }
-        public string Url { get; set; }
-        public double Sales { get; set; }
+        public int PublisherId { get; set; }
+        public string PublisherName { get; set; }
+        public string PublisherUrl { get; set; }
+        public decimal Sales { get; set; }
 
     }
 }

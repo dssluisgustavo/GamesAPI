@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Interfaces
+namespace Repository.Interfaces
 {
-    public interface IJwtProvider
+    public interface IPlatformRepository
     {
-        string NewToken(User user);
+        List<Platform> GetAll();
+
+        Platform GetById(int id);
     }
 }

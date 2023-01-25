@@ -9,8 +9,8 @@ namespace Services.Interfaces
 {
     public interface IUserService
     {
-        int CreateUser(User user);
+        int CreateUser(ValidUser user);
 
-        User ForgotPassword(string username);
+        ValidUser ForgotPassword(string username);
     }
 }

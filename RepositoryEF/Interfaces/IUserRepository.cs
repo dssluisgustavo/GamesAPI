@@ -1,5 +1,5 @@
 ﻿using Domain;
-using NPOI.SS.Formula.Functions;
+using RepositoryEF.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,11 @@ namespace Repository.Interfaces
 {
     public interface IUserRepository
     {
-        ValidUser GetById(int id);
+        User GetById(int id);
 
-        ValidUser GetByUsername(string username);
+        User GetByUsername(string username);
 
-        int CreateUser(ValidUser user);
+        int CreateUser(User user);
 
         string RecoverPassword (string password);
     }

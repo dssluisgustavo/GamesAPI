@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Region
+    public class Region_Sales
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int RegionId { get; set; }
+        public string RegionName { get; set; }
+        public string Url { get; set; }
+        public decimal SalesValue { get; set; }
     }
 }

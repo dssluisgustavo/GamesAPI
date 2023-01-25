@@ -13,7 +13,7 @@ namespace Repository
     {
         public const string connectionString = ("User Id=postgres;Password=C2WKIjQEdr4BsF5d;Server=db.blditmfikaiulhyinehk.supabase.co;Port=5432;Database=postgres");
 
-        public User GetById(int id)
+        public ValidUser GetById(int id)
         {
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
@@ -24,7 +24,7 @@ namespace Repository
                     {
                         reader.Read();
 
-                        User user = new User();
+                        ValidUser user = new ValidUser();
 
                         user.Username = reader.GetString(1);
                         user.Password = reader.GetString(2);
@@ -36,7 +36,7 @@ namespace Repository
             }
         }
 
-        public User GetByUsername(string username)
+        public ValidUser GetByUsername(string username)
         {
 
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
@@ -52,7 +52,7 @@ namespace Repository
                             return null;
                         }
 
-                        User user = new User();
+                        ValidUser user = new ValidUser();
 
                         user.Id= reader.GetInt32(0);
                         user.Username = reader.GetString(1);
@@ -67,7 +67,7 @@ namespace Repository
             }
         }
 
-        public int CreateUser(User user)
+        public int CreateUser(ValidUser user)
         {
             using (NpgsqlDataSource data = NpgsqlDataSource.Create(connectionString))
             {

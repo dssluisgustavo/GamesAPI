@@ -3,6 +3,7 @@ using NPOI.SS.Formula.Eval;
 using NPOI.SS.Formula.Functions;
 using Repository;
 using Repository.Interfaces;
+using RepositoryEF.Models;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,9 +24,16 @@ namespace Services
             userRepository = userRepositoryInterface;
         }
 
-        public int CreateUser(User createUser)
+        public int CreateUser(ValidUser createUser)
         {
-            int newUser = userRepository.CreateUser(createUser);
+            User user = new User();
+
+            user.Id = createUser.Id;
+            user.Username= createUser.Username;
+            user.Password= createUser.Password;
+            user.Email= createUser.Email;
+
+            int newUser = userRepository.CreateUser(user);
 
             if (createUser.Username.Length.IsBetween(4,10) && createUser.Password.Length.IsBetween(8, 15))
             {
@@ -37,21 +45,21 @@ namespace Services
                     return newUser;
                 }
             }
+
             return 0;
             
         }
 
-
-        public User ForgotPassword(string username)
+        public ValidUser ForgotPassword(string username)
         {
-            User userName = userRepository.GetByUsername(username);
-
-            if (userName == null)
+            User user = userRepository.GetByUsername(username);
+            
+            if (user == null)
             {
                 return null;
             }
-
-            return userName;
+ 
+            return null;
         }
 
         /*public User RecoverPassword (string username)

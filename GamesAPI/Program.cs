@@ -1,11 +1,14 @@
 using GamesAPI;
 using GamesAPI.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NPOI.SS.Formula.Functions;
 using Repository;
 using Repository.Interfaces;
+using RepositoryEF.Models;
+using RepositoryEF.Repository;
 using Services;
 using Services.Interfaces;
 using System.Text;
@@ -21,12 +24,12 @@ builder.Services.AddTransient<IPublisherService, PublisherService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddTransient<IJwtProvider, JwtProvider>();
-builder.Services.AddTransient<IGameRepository, GameRepository>();
-builder.Services.AddTransient<IPlatformRepository, PlatformRepository>();
-builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
+builder.Services.AddTransient<IGameRepository, GamesRepository>();
+builder.Services.AddTransient<IPlatformRepository, PlatformsRepository>();
+builder.Services.AddTransient<IPublisherRepository, PublishersRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddControllers().AddNewtonsoftJson();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
@@ -60,6 +63,11 @@ builder.Services.ConfigureOptions<JwtOptionsSetUp>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
+var connectionString = builder.Configuration["dbContextSettings:ConnectionString"];
+builder.Services.AddDbContext<PostgresContext>((options) =>
+{
+    options.UseNpgsql(connectionString);
+});
 
 var app = builder.Build();
 
