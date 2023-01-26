@@ -33,6 +33,8 @@ public partial class PostgresContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserToken> UserTokens { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("User Id=postgres;Password=C2WKIjQEdr4BsF5d;Server=db.blditmfikaiulhyinehk.supabase.co;Port=5432;Database=postgres");
@@ -204,6 +206,25 @@ public partial class PostgresContext : DbContext
                 .HasMaxLength(20)
                 .HasDefaultValueSql("NULL::character varying")
                 .HasColumnName("username");
+
+            entity.Property(e => e.Salt)
+                .HasMaxLength(8)
+                .HasDefaultValueSql("NULL::character varying")
+                .HasColumnName("salt");
+        });
+
+        modelBuilder.Entity<UserToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("user_token_pk");
+
+            entity.ToTable("user_token");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.RefreshToken).HasColumnName("refresh_token");
+            entity.Property(e => e.ExpirationDate).HasColumnName("expiration_date");
+            entity.HasOne(e => e.User).WithOne(e => e.UserToken).HasForeignKey<User>(e => e.Id).HasConstraintName("fk_ut_u");
+
         });
 
         OnModelCreatingPartial(modelBuilder);
