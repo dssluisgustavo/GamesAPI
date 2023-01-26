@@ -39,18 +39,20 @@ public partial class PostgresContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .HasPostgresEnum("auth", "aal_level", new[] { "aal1", "aal2", "aal3" })
-            .HasPostgresEnum("auth", "factor_status", new[] { "unverified", "verified" })
-            .HasPostgresEnum("auth", "factor_type", new[] { "totp", "webauthn" })
-            .HasPostgresEnum("pgsodium", "key_status", new[] { "default", "valid", "invalid", "expired" })
-            .HasPostgresEnum("pgsodium", "key_type", new[] { "aead-ietf", "aead-det", "hmacsha512", "hmacsha256", "auth", "shorthash", "generichash", "kdf", "secretbox", "secretstream", "stream_xchacha20" })
-            .HasPostgresExtension("extensions", "pg_stat_statements")
-            .HasPostgresExtension("extensions", "pgcrypto")
-            .HasPostgresExtension("extensions", "pgjwt")
-            .HasPostgresExtension("extensions", "uuid-ossp")
-            .HasPostgresExtension("graphql", "pg_graphql")
-            .HasPostgresExtension("pgsodium", "pgsodium");
+        //modelBuilder
+        //    .HasPostgresEnum("auth", "aal_level", new[] { "aal1", "aal2", "aal3" })
+        //    .HasPostgresEnum("auth", "factor_status", new[] { "unverified", "verified" })
+        //    .HasPostgresEnum("auth", "factor_type", new[] { "totp", "webauthn" })
+        //    .HasPostgresEnum("pgsodium", "key_status", new[] { "default", "valid", "invalid", "expired" })
+        //    .HasPostgresEnum("pgsodium", "key_type", new[] { "aead-ietf", "aead-det", "hmacsha512", "hmacsha256", "auth", "shorthash", "generichash", "kdf", "secretbox", "secretstream", "stream_xchacha20" })
+        //    .HasPostgresExtension("extensions", "pg_stat_statements")
+        //    .HasPostgresExtension("extensions", "pgcrypto")
+        //    .HasPostgresExtension("extensions", "pgjwt")
+        //    .HasPostgresExtension("extensions", "uuid-ossp")
+        //    .HasPostgresExtension("graphql", "pg_graphql")
+        //    .HasPostgresExtension("pgsodium", "pgsodium");
+
+        modelBuilder.HasDefaultSchema("public");
 
         modelBuilder.Entity<Game>(entity =>
         {
