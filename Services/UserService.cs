@@ -89,13 +89,5 @@ namespace Services
 
             return null;
         }
-
-        /*public User RecoverPassword (string username)
-        {
-            var getPassword = repository.RecoverPassword(User.password);
-
-            return getPassword;
-        }
-        */
     }
 }

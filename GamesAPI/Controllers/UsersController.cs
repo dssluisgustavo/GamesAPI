@@ -28,38 +28,5 @@ namespace GamesAPI.Controllers
             return Created($"\\user\\{login}", login);
 
         }
-
-        [HttpGet("forgotpassword.email={username}")]
-        public IActionResult ForgotPassWord(string username)
-        {
-            ValidUser user = userService.ForgotPassword(username);
-
-            ValidUser Registered = new ValidUser();
-
-            Registered.Email = user.Email;
-
-            if (Registered.Email == user.Email)
-            {
-                return Ok(ConfigURL.base_url + $"recoverpassword?username={username}");
-            }
-            return BadRequest();
-        }
-
-       /* [HttpPut]
-        public IActionResult RecoverPassword (string username)
-        {
-            UserService getUser = new UserService();
-
-            var user = getUser.RecoverPassword(username);
-
-            User userForPassword = new User();
-
-            user.password = getUser.RecoverPassword(password);
-            
-            if (userForPassword.username == user.username)
-            {
-
-            }
-        }*/
     }
 }

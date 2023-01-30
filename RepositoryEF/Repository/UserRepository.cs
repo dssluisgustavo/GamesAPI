@@ -58,11 +58,6 @@ namespace RepositoryEF.Repository
             }
         }
 
-        public string RecoverPassword(string password)
-        {
-            throw new NotImplementedException();
-        }
-
         public void CreateRefreshToken(UserToken token)
         {
             context.UserTokens.Add(token);

@@ -11,6 +11,5 @@ namespace Services.Interfaces
     {
         int CreateUser(ValidUser user);
 
-        ValidUser ForgotPassword(string username);
     }
 }

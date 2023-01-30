@@ -21,7 +21,6 @@ namespace Repository.Interfaces
         int CreateUser(User user);
 
         void Logout(string user);
-        string RecoverPassword (string password);
 
         void SaveChanges();
         UserToken GetTokenByUserId(int id);
