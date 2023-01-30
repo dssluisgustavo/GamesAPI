@@ -23,6 +23,7 @@ builder.Services.AddTransient<IPlatformService, PlatformService>();
 builder.Services.AddTransient<IPublisherService, PublisherService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
+builder.Services.AddTransient<IRefreshTokenProvider, RefreshTokenProvider>();
 builder.Services.AddTransient<IJwtProvider, JwtProvider>();
 builder.Services.AddTransient<IGameRepository, GamesRepository>();
 builder.Services.AddTransient<IPlatformRepository, PlatformsRepository>();
@@ -68,7 +69,7 @@ builder.Services.AddDbContext<PostgresContext>((options) =>
 {
     options.UseNpgsql(connectionString);
 });
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

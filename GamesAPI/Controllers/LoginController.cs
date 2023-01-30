@@ -1,6 +1,8 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryEF.Models;
+using Services;
 using Services.Interfaces;
 
 namespace GamesAPI.Controllers
@@ -18,19 +20,33 @@ namespace GamesAPI.Controllers
         [HttpPost]
         public IActionResult Login(Login login)
         {
-            string token = loginService.Login(login);
+            LoginData tokens = loginService.Login(login);
 
-            if (!string.IsNullOrEmpty(token))
+            if (tokens != null)
             {
-                return Ok(token);
+                return Ok(tokens);
             }
             else { return Unauthorized(); }
         }
 
+        [HttpPost("refresh")]
+        public IActionResult LoginWithToken(LoginWithRefresh loginWithRefresh)
+        {
+            LoginData login = loginService.LoginWithRefresh(loginWithRefresh);
+
+            if (login == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(login);
+        }
+
         [Authorize]
         [HttpGet("/logout")]
-        public IActionResult Logout()
+        public IActionResult Logout(string username)
         {
+            loginService.Logout(username);
+
             return Ok();
         }
     }

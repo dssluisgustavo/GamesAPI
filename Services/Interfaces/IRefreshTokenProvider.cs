@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface ILoginService
+    public interface IRefreshTokenProvider
     {
-        LoginData Login(Login login);
-
-        void Logout(string username);
-
-        LoginData LoginWithRefresh(LoginWithRefresh refreshToken);
+        string NewToken(User user);
     }
 }

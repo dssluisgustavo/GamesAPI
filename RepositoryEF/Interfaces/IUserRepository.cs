@@ -14,8 +14,16 @@ namespace Repository.Interfaces
 
         User GetByUsername(string username);
 
+        void CreateRefreshToken(UserToken user);
+
+        User ReturnToken(string username);
+
         int CreateUser(User user);
 
+        void Logout(string user);
         string RecoverPassword (string password);
+
+        void SaveChanges();
+        UserToken GetTokenByUserId(int id);
     }
 }

@@ -20,7 +20,7 @@ namespace RepositoryEF.Repository
 
         public int CreateUser(User user)
         {
-            User newUser= new User();
+            User newUser = new User();
 
             newUser.Id = user.Id;
             newUser.Username = user.Username;
@@ -46,9 +46,46 @@ namespace RepositoryEF.Repository
             return user;
         }
 
+        public void Logout(string username)
+        {
+            UserToken refreshToken = context.UserTokens.Include(t => t.User.Username)
+                .FirstOrDefault(t => t.RefreshToken == username);
+
+
+            if (username != refreshToken.User.Username)
+            {
+                context.UserTokens.Remove(refreshToken);
+            }
+        }
+
         public string RecoverPassword(string password)
         {
             throw new NotImplementedException();
+        }
+
+        public void CreateRefreshToken(UserToken token)
+        {
+            context.UserTokens.Add(token);
+            context.SaveChanges();
+        }
+
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
+
+        public User ReturnToken (string username)
+        {
+            User user = context.Users.Include(u => u.UserToken).FirstOrDefault(u => u.Username == username);
+
+            return user;
+        }
+
+        public UserToken GetTokenByUserId(int id)
+        {
+            User user = context.Users.Include(u => u.UserToken).FirstOrDefault(u => u.Id == id);
+
+            return user?.UserToken;
         }
     }
 }
