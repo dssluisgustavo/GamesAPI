@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.EntityFrameworkCore.Storage;
 using NPOI.SS.Formula.Eval;
 using NPOI.SS.Formula.Functions;
 using Repository;
@@ -27,42 +28,6 @@ namespace Services
 
         public int CreateUser(ValidUser createUser)
         {
-            User user = new User();
-
-            user.Id = createUser.Id;
-            user.Username = createUser.Username;
-            user.Password = createUser.Password;
-            user.Email = createUser.Email;
-
-            user.Password = Crypto.GenerateMD5(user.Password);
-
-            string salt = "";
-            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZÇ";
-            string numbers = "123456789";
-
-            for (int i = 0; i < 8; i++)
-            {
-                string indexLetter = letters[i].ToString();
-                string indexNum = numbers[i].ToString();
-
-                string sum = indexLetter + indexNum.ToString();
-
-                salt += sum;
-
-            }
-
-            user.Salt = salt;
-
-            string toCrypto = user.Salt + user.Password;
-
-            string stringCrypto = Crypto.GenerateMD5(toCrypto);
-
-            userRepository.SaveChanges();
-
-            int newUser = userRepository.CreateUser(user);
-            // antes de criar o user, criptografar a senha dele
-            // cria o Salt
-            // soma password + Salt e cryptgrafa a string
             if (createUser.Username.Length.IsBetween(4, 10) && createUser.Password.Length.IsBetween(8, 16))
             {
                 Regex validateEmailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
@@ -70,6 +35,37 @@ namespace Services
 
                 if (match.Success)
                 {
+                    User user = new User();
+
+                    user.Id = createUser.Id;
+                    user.Username = createUser.Username;
+                    user.Password = createUser.Password;
+                    user.Email = createUser.Email;
+
+                    string salt = "";
+                    string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+                    Random random = new Random();
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        int index = random.Next(0, letters.Length);
+                        string indexLetter = letters[index].ToString();
+
+                        salt += indexLetter;
+
+                    }
+
+                    user.Salt = salt;
+
+                    string toCrypto = user.Salt + user.Password;
+
+                    user.Password = Crypto.GenerateMD5(toCrypto);
+
+                    userRepository.SaveChanges();
+
+                    int newUser = userRepository.CreateUser(user);
+
                     return newUser;
                 }
             }

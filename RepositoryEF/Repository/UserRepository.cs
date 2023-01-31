@@ -20,13 +20,6 @@ namespace RepositoryEF.Repository
 
         public int CreateUser(User user)
         {
-            User newUser = new User();
-
-            newUser.Id = user.Id;
-            newUser.Username = user.Username;
-            newUser.Email = user.Email;
-            newUser.Password = user.Password;
-
             context.Users.Add(user);
             context.SaveChanges();
             return user.Id;

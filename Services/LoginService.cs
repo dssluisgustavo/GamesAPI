@@ -20,21 +20,21 @@ namespace GamesAPI
             providerRT = providerRefreshToken;
         }
 
-        public LoginData Login(Login user)
+        public LoginData Login(Login login)
         {
-            User login = userRepository.GetByUsername(user.Username);
-            // criptografar o user.password e depois rodar o if
-            string userPassword = Crypto.GenerateMD5(user.Password);
+            User user = userRepository.GetByUsername(login.Username);
 
-            if (login == null || login.Password != user.Password)
+            string userPassword = Crypto.GenerateMD5(user.Salt + user.Password);
+
+            if (user == null || user.Password != userPassword)
             {
                 return null;
             }
 
             LoginData tokenData = new LoginData();
 
-            tokenData. jwtToken = providerJWT.NewToken(login);
-            tokenData.refreshToken = providerRT.NewToken(login);
+            tokenData. jwtToken = providerJWT.NewToken(user);
+            tokenData.refreshToken = providerRT.NewToken(user);
 
 
             return tokenData;
