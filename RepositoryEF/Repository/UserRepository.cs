@@ -41,13 +41,12 @@ namespace RepositoryEF.Repository
 
         public void Logout(string username)
         {
-            UserToken refreshToken = context.UserTokens.Include(t => t.User.Username)
-                .FirstOrDefault(t => t.RefreshToken == username);
+            UserToken refreshToken = context.UserTokens.Include(t => t.User).FirstOrDefault(t => t.User.Username == username);
 
-
-            if (username != refreshToken.User.Username)
+            if (username == refreshToken.User.Username)
             {
                 context.UserTokens.Remove(refreshToken);
+                context.SaveChanges();
             }
         }
 

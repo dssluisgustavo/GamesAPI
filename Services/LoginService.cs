@@ -24,7 +24,7 @@ namespace GamesAPI
         {
             User user = userRepository.GetByUsername(login.Username);
 
-            string userPassword = Crypto.GenerateMD5(user.Salt + user.Password);
+            string userPassword = Crypto.GenerateMD5(user.Salt + login.Password);
 
             if (user == null || user.Password != userPassword)
             {
