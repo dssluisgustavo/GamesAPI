@@ -39,30 +39,11 @@ namespace Services
 
                     user.Id = createUser.Id;
                     user.Username = createUser.Username;
-                    user.Password = createUser.Password;
                     user.Email = createUser.Email;
+                    user.Salt = CreateSalt(8);
+                    user.Password = Crypto.GenerateMD5(user.Salt + user.Password);
 
-                    string salt = "";
-                    string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-                    Random random = new Random();
-
-                    for (int i = 0; i < 8; i++)
-                    {
-                        int index = random.Next(0, letters.Length);
-                        string indexLetter = letters[index].ToString();
-
-                        salt += indexLetter;
-
-                    }
-
-                    user.Salt = salt;
-
-                    string toCrypto = user.Salt + user.Password;
-
-                    user.Password = Crypto.GenerateMD5(toCrypto);
-
-                    userRepository.SaveChanges();
+                    user.UserToken = new UserToken() { User = user, RefreshToken = "", ExpirationDate = DateTime.Now };
 
                     int newUser = userRepository.CreateUser(user);
 
@@ -84,6 +65,25 @@ namespace Services
             }
 
             return null;
+        }
+
+        private string CreateSalt(int numberOfLetters)
+        {
+            string salt = "";
+            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            Random random = new Random();
+
+            for (int i = 0; i < numberOfLetters; i++)
+            {
+                int index = random.Next(0, letters.Length);
+                string indexLetter = letters[index].ToString();
+
+                salt += indexLetter;
+
+            }
+
+            return salt;
         }
     }
 }
